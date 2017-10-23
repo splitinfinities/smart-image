@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+	<title>Stencil Component Starter</title>
+	<script src="/build/smartimage.js"></script>
+	<script src="https://unpkg.com/picturefill@3.0.2/dist/picturefill.js"></script>
+
+</head>
+<body>
+	<smart-image width="2792" height="1574" bg="red" preload="https://grainandmortar.com/wp-content/uploads/2015/07/google_cardboard_will@2x.jpg">
+		<source srcset="/wp-content/uploads/2015/07/google_cardboard_will@2x.jpg" media="(min-width:1023px) and (min-device-pixel-ratio: 2)">
+		<source srcset="/wp-content/uploads/2015/07/google_cardboard_will@2x-1024x577.jpg" media="(min-width:1023px)">
+		<source srcset="/wp-content/uploads/2015/07/google_cardboard_will@2x-1024x577.jpg" media="(max-width:640px) and (min-device-pixel-ratio: 2)">
+		<source srcset="/wp-content/uploads/2015/07/google_cardboard_will@2x-640x361.jpg" media="(max-width:640px)">
+		<img srcset="/wp-content/uploads/2015/07/google_cardboard_will@2x-640x361.jpg" alt="…">
+	</smart-image>
+</body>
+</html>
