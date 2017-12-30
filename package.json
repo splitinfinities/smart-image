@@ -1,6 +1,6 @@
 {
   "name": "smart-image-wc",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Stencil Component Starter",
   "main": "dist/smartimage.js",
   "types": "dist/types/components.d.ts",
