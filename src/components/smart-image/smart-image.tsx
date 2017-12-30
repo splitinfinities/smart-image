@@ -8,7 +8,6 @@ import { updateStyles } from '../../helpers';
 })
 
 export class SmartImage {
-
   @Element() element: HTMLElement;
   @State() figure: HTMLElement;
 
@@ -23,6 +22,9 @@ export class SmartImage {
 
   @State() sources: Array<any> = [];
 
+  @State() io: IntersectionObserver;
+  @State() active: boolean = false;
+
   componentWillLoad() {
     this.setBG();
     this.prepareSources();
@@ -30,17 +32,50 @@ export class SmartImage {
   }
 
   componentDidLoad() {
+    this.addIntersectionObserver();
+
     this.figure = this.element.shadowRoot.querySelector('figure');
-    this.figure.classList.add('loaded')
   }
 
-  setBG () {
+  handleImage() {
+    this.active = true;
+  }
+
+  addIntersectionObserver() {
+    if ('IntersectionObserver' in window) {
+      this.io = new IntersectionObserver((data: any) => {
+        // because there will only ever be one instance
+        // of the element we are observing
+        // we can just use data[0]
+        if (data[0].isIntersecting) {
+          this.handleImage();
+          this.removeIntersectionObserver();
+        }
+      })
+
+      this.io.observe(this.element.shadowRoot.querySelector('figure'));
+    } else {
+      // fall back to setTimeout for Safari and IE
+      setTimeout(() => {
+        this.handleImage();
+      }, 300);
+    }
+  }
+
+  removeIntersectionObserver() {
+    if (this.io) {
+      this.io.disconnect();
+      this.io = null;
+    }
+  }
+
+  setBG() {
     updateStyles(this.element, {
       "--bg": `${this.bg}`
     });
   }
 
-  prepareSources () {
+  prepareSources() {
     const sources = this.element.querySelectorAll("source");
 
     let sourcesArray = [];
@@ -50,11 +85,9 @@ export class SmartImage {
     });
 
     this.sources = sourcesArray;
-
-    console.log(this.sources);
   }
 
-  updateAspectRatio () {
+  updateAspectRatio() {
     this.aspectRatio = (this.height / this.width) * 100;
 
     updateStyles(this.element, {
@@ -65,14 +98,25 @@ export class SmartImage {
 
   }
 
+  renderPicture() {
+    if (this.active) {
+      this.figure.classList.add('loaded');
+
+      return [
+        this.sources.map((source) =>
+          <source srcSet={source.srcset} media={source.media} />
+        ),
+        <img src={this.preload} class="final_image" />
+      ]
+    }
+  }
+
   render() {
     return (
       <figure itemtype="http://schema.org/ImageObject">
+        <div class="overlay"></div>
         <picture>
-          {this.sources.map((source) =>
-            <source srcSet={source.srcset} media={source.media} />
-          )}
-          <img src={this.preload} class="final_image" />
+          { this.renderPicture() }
         </picture>
         <img src={this.preload} class="placeholder" />
       </figure>

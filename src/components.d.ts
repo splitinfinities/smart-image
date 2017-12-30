@@ -4,36 +4,36 @@
  * and imports for stencil collections that might be configured in your stencil.config.js file
  */
 
-import { SmartImage as SmartImage } from './components/smart-image/smart-image';
 
-interface HTMLSmartImageElement extends SmartImage, HTMLElement {
-}
-declare var HTMLSmartImageElement: {
-  prototype: HTMLSmartImageElement;
-  new (): HTMLSmartImageElement;
-};
+import {
+  SmartImage as SmartImage
+} from './components/smart-image/smart-image';
+
 declare global {
+  interface HTMLSmartImageElement extends SmartImage, HTMLElement {
+  }
+  var HTMLSmartImageElement: {
+    prototype: HTMLSmartImageElement;
+    new (): HTMLSmartImageElement;
+  };
   interface HTMLElementTagNameMap {
-      "smart-image": HTMLSmartImageElement;
+    "smart-image": HTMLSmartImageElement;
   }
   interface ElementTagNameMap {
-      "smart-image": HTMLSmartImageElement;
+    "smart-image": HTMLSmartImageElement;
   }
   namespace JSX {
-      interface IntrinsicElements {
-          "smart-image": JSXElements.SmartImageAttributes;
-      }
+    interface IntrinsicElements {
+      "smart-image": JSXElements.SmartImageAttributes;
+    }
   }
   namespace JSXElements {
-      export interface SmartImageAttributes extends HTMLAttributes {
-          mode?: string,
-          color?: string,
-        
-          preload?: string,
-          width?: number,
-          height?: number,
-          bg?: string
-      }
+    export interface SmartImageAttributes extends HTMLAttributes {
+      bg?: string;
+      height?: number;
+      preload?: string;
+      width?: number;
+    }
   }
 }
 
